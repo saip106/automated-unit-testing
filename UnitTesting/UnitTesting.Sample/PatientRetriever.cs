@@ -6,6 +6,8 @@ namespace UnitTesting.Sample
     {
         public PatientDto Retrieve(int id)
         {
+            new Logger().Log($"Finding patient by id {id}");
+
             var patientRepository = new PatientRepository();
             var dbPatient = patientRepository.GetPatientById(id);
 
