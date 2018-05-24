@@ -10,10 +10,13 @@ namespace UnitTesting.Sample
 
             var patientRepository = new PatientRepository();
             var dbPatient = patientRepository.GetPatientById(id);
-
+            if (dbPatient == null) return null;
+            {
+                
+            }
             return new PatientDto
             {
-                FullName = $"{dbPatient.LastName}, {dbPatient.FirstName} {dbPatient.MiddleName}",
+                FullName = $"{dbPatient.LastName}, {dbPatient.FirstName} {dbPatient.MiddleName}".Trim(),
                 Age = DateTime.Now.Year - dbPatient.DateOfBirth.Year
             };
         }

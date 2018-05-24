@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
 namespace UnitTesting.Sample
@@ -14,7 +16,8 @@ namespace UnitTesting.Sample
             _logger.Log($"Finding patient by id {id} from file");
             var patientsJson = File.ReadAllText(@"c:\temp\patients.json");
             var patients = JsonConvert.DeserializeObject<Patient[]>(patientsJson);
-            return patients.Single(x => x.Id == id);
+
+            return patients.SingleOrDefault(x => x.Id == id);
         }
 
         public void AddPatient(Patient patient)
@@ -34,6 +37,28 @@ namespace UnitTesting.Sample
 
             var patientsJson = File.ReadAllText(@"c:\temp\patients.json");
             return JsonConvert.DeserializeObject<Patient[]>(patientsJson);
+        }
+    }
+
+    [Serializable]
+    public class PatientNotFoundException : Exception
+    {
+        public PatientNotFoundException()
+        {
+        }
+
+        public PatientNotFoundException(string message) : base(message)
+        {
+        }
+
+        public PatientNotFoundException(string message, Exception inner) : base(message, inner)
+        {
+        }
+
+        protected PatientNotFoundException(
+            SerializationInfo info,
+            StreamingContext context) : base(info, context)
+        {
         }
     }
 }
