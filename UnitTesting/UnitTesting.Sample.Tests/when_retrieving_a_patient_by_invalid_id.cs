@@ -1,6 +1,6 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
 
 namespace UnitTesting.Sample.Tests
 {
@@ -10,8 +10,11 @@ namespace UnitTesting.Sample.Tests
         [TestMethod]
         public void it_should_throw_an_exception()
         {
+            var logger = Substitute.For<ILogger>();
+            var patientRepository = Substitute.For<IPatientRepository>();
+
             //Arrange
-            var patientRetriever = new PatientRetriever();
+            var patientRetriever = new PatientRetriever(logger, patientRepository);
             var patientDto = patientRetriever.Retrieve(0);
             patientDto.Should().BeNull();
         }

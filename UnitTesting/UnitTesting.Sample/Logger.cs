@@ -2,7 +2,12 @@
 
 namespace UnitTesting.Sample
 {
-    public class Logger
+    public interface ILogger
+    {
+        void Log(string message);
+    }
+
+    public class Logger : ILogger
     {
         public void Log(string message)
         {

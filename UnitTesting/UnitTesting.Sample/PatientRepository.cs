@@ -3,13 +3,26 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace UnitTesting.Sample
 {
-    public class PatientRepository
+    public interface IPatientRepository
     {
-        private readonly Logger _logger = new Logger();
+        Patient GetPatientById(int id);
+        void AddPatient(Patient patient);
+        Patient[] GetAll();
+    }
+
+    public class PatientRepository : IPatientRepository
+    {
+        private readonly Logger _logger;
+
+        public PatientRepository()
+        {
+            _logger = new Logger();
+        }
 
         public Patient GetPatientById(int id)
         {

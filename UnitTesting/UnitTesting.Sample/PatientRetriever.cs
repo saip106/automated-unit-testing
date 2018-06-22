@@ -4,21 +4,33 @@ namespace UnitTesting.Sample
 {
     public class PatientRetriever
     {
+        private ILogger _logger;
+        private IPatientRepository _patientRepository;
+
+        public PatientRetriever(ILogger logger, IPatientRepository patientRepository)
+        {
+            _logger = logger;
+            _patientRepository = patientRepository;
+        }
+
         public PatientDto Retrieve(int id)
         {
-            new Logger().Log($"Finding patient by id {id}");
+            _logger.Log($"Finding patient by id {id}");
 
-            var patientRepository = new PatientRepository();
-            var dbPatient = patientRepository.GetPatientById(id);
+            var dbPatient = _patientRepository.GetPatientById(id);
             if (dbPatient == null) return null;
+
+            var age = DateTime.Now.Year - dbPatient.DateOfBirth.Year;
+            var fullName = $"{dbPatient.LastName}, {dbPatient.FirstName} {dbPatient.MiddleName}".Trim();
+
+            var patientDto = new PatientDto
             {
-                
-            }
-            return new PatientDto
-            {
-                FullName = $"{dbPatient.LastName}, {dbPatient.FirstName} {dbPatient.MiddleName}".Trim(),
-                Age = DateTime.Now.Year - dbPatient.DateOfBirth.Year
+                FullName = fullName,
+                Age = age
             };
+            return patientDto;
         }
     }
+
+    
 }
